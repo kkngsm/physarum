@@ -45,5 +45,5 @@ class Particle{
 }
 
 int X(int x, int y){
-  return (((x % width) + width) % width)+width*(((y % height) + height) % height);
+  return (((x % pg.width) + pg.width) % pg.width)+pg.width*(((y % pg.height) + pg.height) % pg.height);
 }
