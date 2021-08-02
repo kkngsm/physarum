@@ -8,6 +8,7 @@ uniform sampler2D _Tex;
 uniform float _Decay;
 void main() {
     vec2 uv = gl_FragCoord.xy/_iResolution;
+    uv.y = 1. - uv.y;
     vec2 pixelsize = 1.0/_iResolution;
 
     float gray = (texture2D(_Tex, uv).x*3.0+
