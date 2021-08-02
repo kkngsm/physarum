@@ -35,19 +35,12 @@ class Particle{
   void move(color[] prev_pixels, float theta,  float dist){
     sense(prev_pixels, theta, dist);
     pos = PVector.add(pos, new PVector(sin(angle), cos(angle)).mult(move_speed));
-    PVector center = new PVector(pg.width/2, pg.height/2);
-    float distance = PVector.dist(center, pos);
-    if(distance < pupil_size){
-      angle = atan2(pos.x-center.x, pos.y - center.y);
-    }else if(distance > pupil_size+iris_size){
-      angle = atan2(pos.x-center.x, pos.y - center.y) + PI;
-    }
   }
   
   void draw(color[] pixels){
     int px = X((int)pos.x, (int)pos.y);
     int red = pixels[px] >> 16 & 0xFF;
-    pixels[px] = color(min(red + 80, 255));
+    pixels[px] = color(min(red + 100, 255));
   }
 }
 
