@@ -5,13 +5,16 @@ final int PARTICLE_NUM = 100000;
 Particle p[];
 
 ControlP5 GUI;
-float sensor_angle = 0.3;
-float sensor_dist = 5;
-float move_speed = 0.5;
+float sensor_angle = 0.32;
+float sensor_dist = 3.7;
+float move_speed = 1.12;
 
-float pupil_angle = 0.3;
-float pupil_dist = 5;
-float pupil_speed = 0.5;
+float pupil_angle = 0.83;
+float pupil_dist = 6.39;
+float pupil_speed = 0.95;
+
+float Inward_force = 0.01;
+float rate_to_reset = 0.01;
 
 float pupil_size;
 float pupil_around_size;
@@ -20,14 +23,16 @@ float iris_size;
 int sliderValue;
 PShader filter_shader;
 PGraphics pg;
+
+PVector CENTER;
 void setup(){
   size(1000,1000,P2D);
   pg = createGraphics(500,500,P2D);
   p = new Particle[PARTICLE_NUM];
   
-  pupil_size = pg.width/8;
-  pupil_around_size = pg.width/8;
-  iris_size = pg.width/3;
+  pupil_size = pg.width*0.1;
+  pupil_around_size = pg.width*0.1;
+  iris_size = pg.width*0.4;
   
   for(int i = 0; i< PARTICLE_NUM; i++){
     float ang = random(1)*PI*2;
@@ -53,6 +58,7 @@ void setup(){
     .setRange(0, 5)
     .setPosition(50, 20*(y++))
     .setSize(200, 15);
+  y++;
   GUI.addSlider("pupil_angle")
     .setRange(0, PI)
     .setPosition(50, 20*(y++))
@@ -65,7 +71,17 @@ void setup(){
     .setRange(0, 5)
     .setPosition(50, 20*(y++))
     .setSize(200, 15);
+  y++;
+  GUI.addSlider("Inward_force")
+    .setRange(0, 0.1)
+    .setPosition(50, 20*(y++))
+    .setSize(200, 15);
+  GUI.addSlider("rate_to_reset")
+    .setRange(0, 0.05)
+    .setPosition(50, 20*(y++))
+    .setSize(200, 15);
 
+  CENTER = new PVector(pg.width/2, pg.height/2);
 }
 void draw(){
   color[] prev_pixels = new color[pg.width*pg.height];
