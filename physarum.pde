@@ -6,9 +6,12 @@ Particle p[];
 
 ControlP5 GUI;
 float sensor_angle = 0.3;
-float pupil_angle = 0.3;
 float sensor_dist = 5;
 float move_speed = 0.5;
+
+float pupil_angle = 0.3;
+float pupil_dist = 5;
+float pupil_speed = 0.5;
 
 float pupil_size;
 float pupil_around_size;
@@ -19,11 +22,11 @@ PShader filter_shader;
 PGraphics pg;
 void setup(){
   size(1000,1000,P2D);
-  pg = createGraphics(300,300,P2D);
+  pg = createGraphics(500,500,P2D);
   p = new Particle[PARTICLE_NUM];
   
   pupil_size = pg.width/8;
-  pupil_size = pg.width/8;
+  pupil_around_size = pg.width/8;
   iris_size = pg.width/3;
   
   for(int i = 0; i< PARTICLE_NUM; i++){
@@ -37,24 +40,33 @@ void setup(){
   filter_shader.set("_Decay", 0.1);
   
   GUI = new ControlP5(this);
+  int y = 1;
   GUI.addSlider("sensor_angle")
     .setRange(0, PI)
-    .setPosition(50, 40)
-    .setSize(200, 15);
-  GUI.addSlider("pupil_angle")
-    .setRange(0, PI)
-    .setPosition(50, 60)
+    .setPosition(50, 20*(y++))
     .setSize(200, 15);
   GUI.addSlider("sensor_dist")
     .setRange(0, 20)
-    .setPosition(50, 80)
+    .setPosition(50, 20*(y++))
     .setSize(200, 15);
   GUI.addSlider("move_speed")
     .setRange(0, 5)
-    .setPosition(50, 100)
+    .setPosition(50, 20*(y++))
     .setSize(200, 15);
-}
+  GUI.addSlider("pupil_angle")
+    .setRange(0, PI)
+    .setPosition(50, 20*(y++))
+    .setSize(200, 15);
+  GUI.addSlider("pupil_dist")
+    .setRange(0, 20)
+    .setPosition(50, 20*(y++))
+    .setSize(200, 15);
+  GUI.addSlider("pupil_speed")
+    .setRange(0, 5)
+    .setPosition(50, 20*(y++))
+    .setSize(200, 15);
 
+}
 void draw(){
   color[] prev_pixels = new color[pg.width*pg.height];
   filter_shader.set("_Tex", pg.get());
@@ -76,6 +88,12 @@ void draw(){
 }
 
 void keyPressed(){
-  //setup();
-  save(frameCount+".png");
+  if(key=='\n'){
+    save(frameCount+".png");
+    println("saved!");
+  }else{
+    setup();
+  }
+
+
 }
